@@ -1,0 +1,191 @@
+
+/* SECTION 1: GLOBAL BODY & LAYOUT STYLES*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f0f9;
+    margin: 0;
+    padding: 20px;
+    color: #2d3436;
+}
+
+.container {
+    max-width: 750px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(108, 92, 231, 0.12);
+}
+
+/* SECTION 2: HEADINGS, FORMS, & BUTTONS      */
+h2, h3 {
+    color: #4834d4;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #3c40c6;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input:focus, textarea:focus {
+    border-color: #6c5ce7;
+    outline: none;
+    box-shadow: 0 0 6px rgba(108, 92, 231, 0.3);
+}
+
+button {
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    opacity: 0.92;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* SECTION 3: NAVIGATION & TAB CONTROLS       */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e4e7eb;
+    padding-bottom: 12px;
+}
+
+.nav span {
+    color: #4834d4;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #d63031;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tab-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: #e0e8f9;
+    color: #3c40c6;
+    border: none;
+    padding: 11px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    flex: 1;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.tab-btn.active {
+    background: #6c5ce7;
+    color: white;
+}
+
+/* SECTION 4: STATUS BOXES & ANIMATIONS       */
+.rfid-status-box {
+    background: #eef7fe;
+    border: 1px solid #74b9ff;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.status-banner {
+    background: #eef7fe;
+    border: 1px solid #74b9ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.rfid-pulse {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #0984e3;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 8px #0984e3;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(9, 132, 227, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(9, 132, 227, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(9, 132, 227, 0); }
+}
+
+.secure-box {
+    background: #f3f0f9;
+    border: 1px solid #dcd6f7;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.confidential-tag {
+    background: #6c5ce7;
+    color: white;
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* SECTION 5: TABLES AND DATA GRIDS           */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+table, th, td {
+    border: 1px solid #dcdde1;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #e0e8f9;
+    color: #3c40c6;
+}
