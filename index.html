@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypted Confidential Student Medical Record System</title>
+    <!-- SECTION: External Stylesheet Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <!-- SECTION 1: LOGIN MODULE    -->
+    <div id="loginSection">
+        <h2>Clinic System Login</h2>
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" id="username" placeholder="Enter username (nurse or admin)">
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
+        <!-- Trigger login function -->
+        <button onclick="login()">Log In</button>
+        
+        <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+            <a onclick="showChangePasswordModal()" style="color: #6c5ce7; cursor: pointer; font-weight: bold; text-decoration: underline;">Change Password?</a>
+        </p>
+    </div>
+
+
+    <!-- SECTION 2: CHANGE PASSWORD MODULE          -->
+    <div id="changePasswordSection" class="hidden">
+        <h2>Change Account Password</h2>
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" id="cpUsername" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label>Old Password:</label>
+            <input type="password" id="cpOldPassword" placeholder="Enter old password">
+        </div>
+        <div class="form-group">
+            <label>New Password:</label>
+            <input type="password" id="cpNewPassword" placeholder="Enter new password (at least 4 chars)">
+        </div>
+        <button onclick="updatePassword()" style="background-color: #0984e3;">Update Password</button>
+        <button onclick="backToLogin()" style="background-color: #b2bec3; margin-top: 10px;">Back to Login</button>
+    </div>
+
+
+    <!-- SECTION 3: NURSE DASHBOARD & KIOSK MODULE  -->
+    <div id="nurseDashboard" class="hidden">
+        <div class="nav">
+            <span><b>ESP32-S3 Nurse Kiosk</b></span>
+            <a onclick="logout()">Log Out</a>
+        </div>
+
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="switchNurseTab('verifyTab', this)">Student Verification</button>
+            <button class="tab-btn" onclick="switchNurseTab('registerTab', this)">Register New Student Patient</button>
+            <button class="tab-btn" onclick="switchNurseTab('changePinTab', this)">Change Student PIN</button>
+        </div>
+        
+        <!-- Tab 1: Student 2FA Verification & Workspace -->
+        <div id="verifyTab">
+            <div id="verifyStep">
+                <h3>Student Verification (MFA)</h3>
+
+                <div class="rfid-status-box">
+                    <span class="rfid-pulse"></span>
+                    <span style="font-weight: bold; color: #0984e3;">HARDWARE STATUS: RC522 RFID READER ACTIVE</span>
+                    <p style="font-size: 12px; color: #555; margin: 5px 0 0 0;">Tap RFID Card on hardware device OR manually type Student Name / ID below.</p>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Scanned RFID Card (Hardware Tap):</label>
+                    <input type="text" id="rfidCardInput" placeholder="Waiting for physical card tap..." readonly style="background-color: #eef7fe; border: 2px dashed #74b9ff; font-weight: bold; color: #0984e3;">
+                </div>
+
+                <div class="form-group">
+                    <label>Student Full Name / Student Number (Manual Type):</label>
+                    <input type="text" id="manualNameInput" placeholder="Enter Student Name or Number (e.g., 2024-3239-1)">
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Student Patient 4-Digit PIN (Required for MFA):</label>
+                    <input type="password" id="authPin" placeholder="Enter 4-digit PIN">
+                </div>
+
+                <button onclick="verifyConsent()" style="background-color: #6c5ce7;">Verify MFA & Access Record</button>
+                <span><p style="font-size: 12px; color: #555; margin: 5px 0 0 0; text-align: center;">Here For Your Care !</p></span>
+            </div>
+
+            <!-- Patient Record Workspace (Post-MFA) -->
+            <div id="patientWorkspace" class="hidden">
+                <div class="status-banner">
+                    <p style="margin: 0; color: #0984e3; font-weight: bold; font-size: 13px;">✅ MFA Granted. Medical Record decrypted securely via AES-256.</p>
+                </div>
+
+                <h2>Update Patient Record</h2>
+                <div class="form-group">
+                    <label>Student Patient Name:</label>
+                    <input type="text" id="pName" readonly style="background-color: #f1f2f6;">
+                </div>
+                <div class="form-group">
+                    <label>Student Patient Number:</label>
+                    <input type="text" id="pStudentNum" readonly style="background-color: #f1f2f6;">
+                </div>
+                <div class="form-group">
+                    <label>Age:</label>
+                    <input type="number" id="pAge">
+                </div>
+                <div class="form-group">
+                    <label>Symptoms / Diagnosis:</label>
+                    <textarea id="pSymptoms" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Treatment Given:</label>
+                    <input type="text" id="pTreatment">
+                </div>
+                <button onclick="saveRecord()" style="background-color: #6c5ce7;">Save & Encrypt</button>
+                
+                <div class="secure-box">
+                    <span class="confidential-tag">AES-256 CIPHERTEXT (Stored in ESP32)</span>
+                    <p style="font-family: monospace; font-size: 12px; word-break: break-all; color: #555; margin: 0;" id="encryptedHashDisplay"></p>
+                </div>
+
+                <button onclick="lockScreen()" style="background-color: #d63031; margin-top: 15px;">Finish Consultation (Auto-Lock Screen)</button>
+            </div>
+
+        </div>
+
+        <!-- Tab 2: Register New Student -->
+        <div id="registerTab" class="hidden">
+            <h3>Register New Student Number & Record</h3>
+            <div class="form-group">
+                <label>Student Full Name:</label>
+                <input type="text" id="regName" placeholder="Full Name">
+            </div>
+
+            <div class="form-group">
+                <label>Student Number:</label>
+                <input type="text" id="regStudentNum" placeholder="e.g., 2024-3239-1">
+            </div>
+
+            <div class="form-group">
+                <label>RFID Card UID (Hardware Tap):</label>
+                <input type="text" id="regRfidUid" placeholder="Tap card on reader or enter RFID UID">
+            </div>
+
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="number" id="regAge" placeholder="Age">
+            </div>
+            <div class="form-group">
+                <label>Initial Symptoms / History:</label>
+                <textarea id="regSymptoms" placeholder="Medical background" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Initial Treatment:</label>
+                <input type="text" id="regTreatment" placeholder="None if applicable">
+            </div>
+            <div class="form-group">
+                <label>Create 4-Digit Student PIN:</label>
+                <input type="password" id="regPin" placeholder="4-digit PIN">
+            </div>
+            <button onclick="registerNewStudent()" style="background-color: #503de3;">Register Student to Database</button>
+        </div>
+
+        <!-- Tab 3: Change Student PIN -->
+        <div id="changePinTab" class="hidden">
+            <h3>Change Student Patient PIN</h3>
+            <div class="form-group">
+                <label>Student Full Name or Student Number:</label>
+                <input type="text" id="cpStudentQuery" placeholder="Enter Student Name or Number">
+            </div>
+            <div class="form-group">
+                <label>Current 4-Digit PIN:</label>
+                <input type="password" id="cpCurrentPin" placeholder="Enter current 4-digit PIN" maxlength="4">
+            </div>
+            <div class="form-group">
+                <label>New 4-Digit PIN:</label>
+                <input type="password" id="cpNewPin" placeholder="Enter new 4-digit PIN" maxlength="4">
+            </div>
+            <button onclick="updateStudentPin()" style="background-color: #0984e3;">Update Student PIN</button>
+        </div>
+    </div>
+
+    <!-- SECTION 4: ADMIN DASHBOARD MODULE          -->
+    <div id="adminDashboard" class="hidden">
+        <div class="nav">
+            <span><b>ESP32-S3 Admin Dashboard (Master Control)</b></span>
+            <a onclick="logout()">Log Out</a>
+        </div>
+
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="switchAdminTab('masterTab', this)">Master Records (Encrypted)</button>
+            <button class="tab-btn" onclick="switchAdminTab('auditTab', this)">Security Audit Logs</button>
+        </div>
+
+        <!-- Master Records Database View -->
+        <div id="masterTab">
+            <h3>Encrypted Master Database</h3>
+            <div class="form-group">
+                <input type="text" id="adminSearch" placeholder="Search student name or ID..." onkeyup="filterAdminTable()">
+            </div>
+            
+            <button onclick="toggleUnencryptedView()" style="background-color: #0984e3; margin-bottom: 10px;">Toggle Plaintext (decrypted) View</button>
+            <button onclick="changeAdminPassword()" style="background-color: #6c5ce7; margin-bottom: 15px;">Change Master Password</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name & ID</th>
+                        <th>Age</th>
+                        <th>Database Records Data</th>
+                        <th>PIN</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTable"></tbody>
+            </table>
+            <button onclick="clearAllRecords()" style="background-color: #d63031; margin-top: 15px;">Reset Database</button>
+        </div>
+
+        <!-- Security Audit Logs View -->
+        <div id="auditTab" class="hidden">
+            <h3>System Access & Audit Logs</h3>
+            <p style="font-size: 12px; color: #666;">Tracks who accessed confidential records and when.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User / Role</th>
+                        <th>Action Performed</th>
+                        <th>Target Student</th>
+                    </tr>
+                </thead>
+                <tbody id="auditTable"></tbody>
+            </table>
+            <button onclick="clearAuditLogs()" style="background-color: #d63031; margin-top: 15px;">Clear Audit Logs</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>function openscreen(){
+    document.getElementById("outputMessage").innerText = ""
+}
+    </script>
+
+</body>
+</html>
