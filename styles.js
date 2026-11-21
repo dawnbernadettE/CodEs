@@ -1,0 +1,171 @@
+import { StyleSheet, Platform, StatusBar } from 'react-native';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F4F6F9',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || 16 : 0,
+  },
+  inner: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  header: {
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#1A202C',
+  },
+  subtitle: {
+    fontSize: 13,
+    color: '#4A5568',
+    marginTop: 4,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#CBD5E0',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: '#1A202C',
+  },
+  addButton: {
+    backgroundColor: '#2563EB',
+    paddingHorizontal: 18,
+    paddingVertical: 13,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 15,
+  },
+  listContent: {
+    paddingBottom: 32,
+  },
+  itemCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  taskContent: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#2563EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#2563EB',
+  },
+  checkmark: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  taskText: {
+    flex: 1,
+    fontSize: 15,
+    color: '#1A202C',
+  },
+  taskTextCompleted: {
+    textDecorationLine: 'line-through',
+    color: '#94A3B8',
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  editBtn: {
+    backgroundColor: '#0EA5E9',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  deleteBtn: {
+    backgroundColor: '#EF4444',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  saveBtn: {
+    backgroundColor: '#16A34A',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  cancelBtn: {
+    backgroundColor: '#64748B',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  actionBtnText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  editRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  editInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#2563EB',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    fontSize: 14,
+    color: '#1A202C',
+    backgroundColor: '#F8FAFC',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    marginTop: 48,
+    paddingHorizontal: 24,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#475569',
+  },
+  emptySubtext: {
+    fontSize: 13,
+    color: '#94A3B8',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+});
